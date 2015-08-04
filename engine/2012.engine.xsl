@@ -69,6 +69,8 @@
             @author Pavel Ptacek
             @copyright Pavel Ptacek (c) 2012-2013
     -->
+    
+    <xsl:param name="base-output-uri" select="''"/>
 
     <!-- required includes -->
     <xsl:include href="2012.defaultdata.xsl" />

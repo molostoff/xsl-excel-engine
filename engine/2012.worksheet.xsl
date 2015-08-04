@@ -12,22 +12,23 @@
         <xsl:param name="sheetNames" />
         <xsl:param name="sheets" />
         <xsl:param name="vbas" />
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
         <!-- Put the sheetX contents into correct places -->
         <xsl:for-each select="$sheets/*">
-            <xsl:result-document href="xl/worksheets/sheet{position()}.xml">
+            <xsl:result-document href="{$base-output-uri}xl/worksheets/sheet{position()}.xml">
                 <xsl:copy-of select="." />
             </xsl:result-document>
         </xsl:for-each>
 
         <!-- Generate the workbook.xml -->
-        <xsl:result-document href="xl/workbook.xml">
+        <xsl:result-document href="{$base-output-uri}xl/workbook.xml">
             <workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="x15" xmlns:x15="http://schemas.microsoft.com/office/spreadsheetml/2010/11/main">
               <fileVersion appName="xl" lastEdited="6" lowestEdited="4" rupBuild="14128"/>
               <workbookPr defaultThemeVersion="124226"/>
               <mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
                 <mc:Choice Requires="x15">
-                  <x15ac:absPath url="C:\Users\Pavel Ptacek\Desktop\" xmlns:x15ac="http://schemas.microsoft.com/office/spreadsheetml/2010/11/ac"/>
+                  <x15ac:absPath url="C:\Users\Pavel Ptacek\Desktop\" xmlns:x15ac="http://schemas.microsoft.com/office/spreadsheetml/2010/11/ac"/><!-- TODO: abs path ? -->
                 </mc:Choice>
               </mc:AlternateContent>
               <bookViews>
@@ -45,14 +46,14 @@
         <!-- Generate the vba project files -->
         <xsl:if test="$vbas">
             <xsl:for-each select="$vbas/vba">
-                <xsl:result-document href="xl/{.}" media-type="text/plain" omit-xml-declaration="yes">
+                <xsl:result-document href="{$base-output-uri}xl/{.}" media-type="text/plain" omit-xml-declaration="yes">
                     <xsl:fallback/>
                 </xsl:result-document>
             </xsl:for-each>
         </xsl:if>
 
         <!-- Generate the empty sharedStrings file -->
-        <xsl:result-document href="xl/sharedStrings.xml">
+        <xsl:result-document href="{$base-output-uri}xl/sharedStrings.xml">
             <sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="0" uniqueCount="0" />
         </xsl:result-document>
 

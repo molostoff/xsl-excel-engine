@@ -16,9 +16,10 @@
     <!-- generate theme file -->
     <xsl:template name="generate_themes" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
         <xsl:param name="content" />
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
         <xsl:for-each select="$content/a:theme">
-            <xsl:result-document href="xl/theme/theme{position()}.xml">
+            <xsl:result-document href="{$base-output-uri}xl/theme/theme{position()}.xml">
                 <xsl:copy-of select="." />
             </xsl:result-document>
         </xsl:for-each>
@@ -27,8 +28,9 @@
     <!-- generate styles file -->
     <xsl:template name="generate_styles">
         <xsl:param name="content" />
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
-        <xsl:result-document href="xl/styles.xml">
+        <xsl:result-document href="{$base-output-uri}xl/styles.xml">
             <xsl:copy-of select="$content" />
         </xsl:result-document>
     </xsl:template>
@@ -36,7 +38,9 @@
     <!-- generate binary file -->
     <xsl:template name="generate_binary">
         <xsl:param name="name"/>
-        <xsl:result-document href="{$name}" media-type="text/plain" omit-xml-declaration="yes">
+        <xsl:param name="base-output-uri" tunnel="yes"/>
+
+        <xsl:result-document href="{$base-output-uri}{$name}" media-type="text/plain" omit-xml-declaration="yes">
             <xsl:fallback/>
         </xsl:result-document>
     </xsl:template>

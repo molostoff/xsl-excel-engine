@@ -13,9 +13,10 @@
             <name>Sheet1</name>
         </xsl:param>
         <xsl:param name="author">YOURCOMPANY</xsl:param>
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
         <!-- app.xml properties file -->
-        <xsl:result-document href="docProps/app.xml">
+        <xsl:result-document href="{$base-output-uri}docProps/app.xml">
             <Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
               <Application>Microsoft Excel</Application>
               <DocSecurity>0</DocSecurity>
@@ -45,7 +46,7 @@
         </xsl:result-document>
 
         <!-- core.xml document -->
-        <xsl:result-document href="docProps/core.xml">
+        <xsl:result-document href="{$base-output-uri}docProps/core.xml">
             <cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
               <dc:creator><xsl:value-of select="$author" /></dc:creator>
               <cp:lastModifiedBy><xsl:value-of select="$author" /></cp:lastModifiedBy>

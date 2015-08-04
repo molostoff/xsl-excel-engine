@@ -12,6 +12,7 @@
     <xsl:template name="generate_media">
         <xsl:param name="images" />
         <xsl:param name="printerSettings" />
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
         <!-- Generate the drawing for every sheet -->
         <xsl:if test="$images">
@@ -35,13 +36,13 @@
 
         <!-- Binaries - put the files into correct places -->
         <xsl:for-each-group select="$images/image" group-by="concat(path, '.', ext)">
-            <xsl:result-document href="xl/media/{current-grouping-key()}" media-type="text/plain" omit-xml-declaration="yes">
+            <xsl:result-document href="{$base-output-uri}xl/media/{current-grouping-key()}" media-type="text/plain" omit-xml-declaration="yes">
                 <xsl:fallback/>
             </xsl:result-document>
         </xsl:for-each-group>
         <xsl:if test="$printerSettings">
             <xsl:for-each select="$printerSettings/setting">
-                <xsl:result-document href="xl/printerSettings/{.}" media-type="text/plain" omit-xml-declaration="yes">
+                <xsl:result-document href="{$base-output-uri}xl/printerSettings/{.}" media-type="text/plain" omit-xml-declaration="yes">
                     <xsl:fallback />
                 </xsl:result-document>
             </xsl:for-each>
@@ -53,9 +54,10 @@
         <xsl:param name="sheetNr" />
         <xsl:param name="images" />
         <xsl:param name="printerSettings" />
+        <xsl:param name="base-output-uri" tunnel="yes"/>
 
         <!-- Generate the sheetX.xml.rels file -->
-        <xsl:result-document href="xl/worksheets/_rels/sheet{$sheetNr}.xml.rels">
+        <xsl:result-document href="{$base-output-uri}xl/worksheets/_rels/sheet{$sheetNr}.xml.rels">
             <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
                 <xsl:if test="$images">
                     <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing{$sheetNr}.xml"/>
@@ -69,7 +71,7 @@
         <!-- Generate the drawing & rels -->
         <xsl:if test="$images">
             <!-- Generate the drawingX.xml file -->
-            <xsl:result-document href="xl/drawings/drawing{$sheetNr}.xml">
+            <xsl:result-document href="{$base-output-uri}xl/drawings/drawing{$sheetNr}.xml">
                 <xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
                     <xsl:for-each select="$images">
                         <xsl:variable name="imgId" select="position()" />
@@ -112,7 +114,7 @@
             </xsl:result-document>
 
             <!-- Generate the drawingX.xml.rels file -->
-            <xsl:result-document href="xl/drawings/_rels/drawing{$sheetNr}.xml.rels">
+            <xsl:result-document href="{$base-output-uri}xl/drawings/_rels/drawing{$sheetNr}.xml.rels">
                 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
                     <xsl:for-each select="$images">
                       <Relationship Id="rId{position()}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="../media/{./path}.{./ext}"/>
